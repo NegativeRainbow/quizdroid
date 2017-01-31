@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.content.Intent;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String topic = (String) listView.getItemAtPosition(i);
+                Intent intent = new Intent(this, TopicOverview.class);
+                startActivity(intent);
             }
         };
         listView.setAdapter(adapter);
