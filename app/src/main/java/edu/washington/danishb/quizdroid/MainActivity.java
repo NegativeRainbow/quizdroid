@@ -22,19 +22,22 @@ public class MainActivity extends AppCompatActivity {
         String[] topics = new String[] {
                 "Math",
                 "Physics",
-                "Marvel Super Heroes",
-                "DC Superheroes"
+                "Marvel Super Heroes"
         };
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, topics);
-        AdapterView.OnItemClickListener listener = new AdapterView.OnItemClickListener() {
+                android.R.layout.simple_list_item_1,
+                android.R.id.text1,
+                topics);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String topic = (String) listView.getItemAtPosition(i);
-                Intent intent = new Intent(this, TopicOverview.class);
+                Intent intent = new Intent(MainActivity.this, Question.class);
+                intent.putExtra("TOPIC", topic);
                 startActivity(intent);
             }
-        };
+        });
+
         listView.setAdapter(adapter);
     }
 }
