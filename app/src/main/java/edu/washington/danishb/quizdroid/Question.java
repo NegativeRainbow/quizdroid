@@ -1,50 +1,20 @@
 package edu.washington.danishb.quizdroid;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.widget.TextView;
+/**
+ * Created by Danish on 2/12/2017.
+ */
 
-import java.util.HashMap;
-import java.util.Map;
+public class Question {
+    public String text;
+    public String[] answers = new String[4];
+    public int correctResponse;
 
-public class Question extends AppCompatActivity {
-
-    private class Quiz {
-        String[][] questionsResponses;
-        int[] correctResponses;
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_question);
-        Intent intent = getIntent();
-        String topic = intent.getStringExtra("Topic");
-        TextView viewTopic = (TextView)findViewById(R.id.viewTopic);
-        viewTopic.setText(topic);
-        Log.d("Quiz", topic);
-
-        String[][] mathQuestions = {
-                {"1+1", "2", "3", "1", "4"},
-                {"2+2", "2", "3", "1", "4"},
-                {"2+1", "2", "3", "1", "4"}
-        };
-
-        int[] mathAnswers = {1, 4, 2};
-
-        Map<String, String[][]> allQuestions = new HashMap<>();
-        allQuestions.put("Math", mathQuestions);
-
-        Map<String, int[]> allAnswers = new HashMap<>();
-        allAnswers.put("Math", mathAnswers);
-
-        Map<String, String> topicOverviews = new HashMap<>();
-        topicOverviews.put("Math", "Math is the thing where you add and stuff");
-
-        Quiz quiz = new Quiz();
-        quiz.questionsResponses = allQuestions.get(topic);
-        quiz.correctResponses = allAnswers.get(topic);
+    public Question(String text, String answer1, String answer2, String answer3, String answer4, int solution){
+        this.text=text;
+        this.answers[0] = answer1;
+        this.answers[1] = answer2;
+        this.answers[2] = answer3;
+        this.answers[3] = answer4;
+        this.correctResponse=solution;
     }
 }
