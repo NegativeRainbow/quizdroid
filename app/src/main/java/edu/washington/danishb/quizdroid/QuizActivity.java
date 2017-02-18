@@ -15,6 +15,8 @@ public class QuizActivity extends AppCompatActivity {
         setContentView(R.layout.activity_quiz);
         application = (QuizApp) getApplication();
         application.currentQuestion = 0;
+        application.correctResponses = 0;
+        application.lastResponse = -1;
         TextView topicView = (TextView) findViewById(R.id.current_topic_view);
         topicView.setText(application.currentTopic.topic);
 

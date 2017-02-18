@@ -11,6 +11,8 @@ public class QuizApp extends Application {
     TopicRepository topics;
     Topic currentTopic;
     int currentQuestion;
+    int correctResponses;
+    int lastResponse;
 
     @Override
     public void onCreate() {

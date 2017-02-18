@@ -43,7 +43,7 @@ public class TopicRepository {
                 "Batman", "Superman", "Doomsday", "Dr. Doom", 3);
         marvelQuestions[2] = new Question("Whens", "Marvel", "Mahvel", "The next comic coming out",
                 "The next Avengers movie", 1);
-        Topic marvel = new Topic("Marvel Super Heroes", "Basic Marvel Questions", "I don't know much" +
+        Topic marvel = new Topic("Marvel Super Heroes", "Basic Marvel Questions", "I don't know much " +
                 "about Marvel, so these are super basic questions on Marvel.", physicsQuestions);
         topics.put("Marvel Super Heroes", marvel);
     }
