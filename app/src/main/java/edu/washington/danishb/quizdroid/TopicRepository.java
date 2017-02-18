@@ -1,6 +1,16 @@
 package edu.washington.danishb.quizdroid;
 
+import android.os.Environment;
+import android.util.JsonReader;
+import android.util.Log;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -19,33 +29,53 @@ public class TopicRepository {
 
     public TopicRepository() {
         topics = new HashMap<String, Topic>();
-        Question[] mathQuestions = new Question[4];
-        mathQuestions[0] = new Question("1+1=", "1", "2", "3", "0", 1);
-        mathQuestions[1] = new Question("1-1=", "1", "2", "3", "0", 3);
-        mathQuestions[2] = new Question("1*1=", "1", "2", "3", "0", 0);
-        mathQuestions[3] = new Question("1/1=", "1", "2", "3", "0", 0);
-        Topic math = new Topic("Math", "Basic Math Questions", "Test your math skills with questions" +
-                "on addition, subtraction, multiplication, and division!", mathQuestions);
-        topics.put("Math", math);
-        Question[] physicsQuestions = new Question[3];
-        physicsQuestions[0] = new Question("e=", "2.1 something", "mc^2", "pi", "elephant", 1);
-        physicsQuestions[1] = new Question("Every action has an equal and opposite",
-                "force", "consequence", "equation", "reaction", 3);
-        physicsQuestions[2] = new Question("Without atmosphere, a bowling ball will fall _____ than a feather"
-                , "at the same speed", "faster", "slower", "unlike", 0);
-        Topic physics = new Topic("Physics", "Basic Physics Questions", "Test your physics skills with" +
-                "questions on basic theories!", physicsQuestions);
-        topics.put("Physics", physics);
-        Question[] marvelQuestions = new Question[3];
-        marvelQuestions[0] = new Question("What is Wolverine's distinguishing feature", "Hat",
-                "Mask", "Voice", "Claws", 3);
-        marvelQuestions[1] = new Question("Which one of these is a Marvel character",
-                "Batman", "Superman", "Doomsday", "Dr. Doom", 3);
-        marvelQuestions[2] = new Question("Whens", "Marvel", "Mahvel", "The next comic coming out",
-                "The next Avengers movie", 1);
-        Topic marvel = new Topic("Marvel Super Heroes", "Basic Marvel Questions", "I don't know much " +
-                "about Marvel, so these are super basic questions on Marvel.", physicsQuestions);
-        topics.put("Marvel Super Heroes", marvel);
+        File sdcard = Environment.getExternalStorageDirectory();
+        File questionFile = new File(sdcard, "questions.json");
+        Log.v("TopicRepository", questionFile.toString());
+        try {
+            FileReader questionReader = new FileReader(questionFile);
+            JsonReader reader = new JsonReader(questionReader);
+            try {
+                reader.beginArray();
+                while(reader.hasNext()){
+                    reader.nextName();
+                    String topicName = reader.nextString();
+                    Log.v("TopicRepository", topicName);
+                    reader.nextName();
+                    String topicDesc = reader.nextString();
+                    Log.v("TopicRepository", topicDesc);
+                    reader.nextName();
+                    reader.beginArray();
+                    while(reader.hasNext()){
+                        reader.nextName();
+                        String questionText = reader.nextString();
+                        Log.v("TopicRepository", questionText);
+                        reader.nextName();
+                        int questionCorrect = reader.nextInt()-1;
+                        reader.nextName();
+                        List<Question> questionList = new ArrayList<Question>();
+                        reader.beginArray();
+                        questionList.add(new Question(questionText, reader.nextString(), reader.nextString(),
+                                reader.nextString(), reader.nextString(), questionCorrect));
+                        reader.endArray();
+                        Question[] questionArray = new Question[questionList.size()];
+                        int i = 0;
+                        for(Question q : questionList){
+                            questionArray[i] = q;
+                            i++;
+                        }
+                        topics.put(topicName, new Topic(topicName, topicDesc, topicDesc, questionArray));
+                    }
+                    reader.endArray();
+                }
+                reader.endArray();
+                reader.close();
+            } catch(IOException e){
+                Log.e("TopicRepository", e.getMessage());
+            }
+        } catch(FileNotFoundException e) {
+            Log.e("QuestionRepository", e.getMessage());
+        }
     }
 
     public Topic getTopic(String name){
