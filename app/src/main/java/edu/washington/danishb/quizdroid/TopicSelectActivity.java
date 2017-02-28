@@ -1,6 +1,7 @@
 package edu.washington.danishb.quizdroid;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -20,6 +21,7 @@ public class TopicSelectActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_topic_select);
         application = (QuizApp) getApplication();
+        application.setContext(this);
         ListView topicList = (ListView) findViewById(R.id.activity_topic_select);
         topics = application.topics.getTopics();
         ArrayAdapter<String> topicAdapter= new ArrayAdapter<String>(
